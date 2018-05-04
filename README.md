@@ -2,6 +2,10 @@
 
 > Exercises with Terraform and DigitalOcean
 
+## Links
+
+* https://www.yworks.com/yed-live/
+
 ## Usage example
 
 ```
