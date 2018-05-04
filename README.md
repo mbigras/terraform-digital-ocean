@@ -6,6 +6,10 @@
 
 * https://www.yworks.com/yed-live/
 
+## Overview
+
+![](overview.png)
+
 ## Usage example
 
 ```
