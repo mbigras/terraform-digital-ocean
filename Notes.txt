@@ -1,0 +1,66 @@
+Terraform DigitalOcean
+
+Overview
+
+Create a droplet
+Create droplet with ssh
+
+
+Create a droplet
+
+List all droplets
+
+curl -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $(lpass show --notes do_token)" "https://api.digitalocean.com/v2/droplets?page=1&per_page=1" | jq .
+
+List all available images
+
+curl -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $(lpass show --notes do_token)" "https://api.digitalocean.com/v2/images?page=1&per_page=999&type=distribution" | jq .
+
+ruby -e 'p ["foo", "bar", "Baz"]' | jq '.[] | select(test("b"; "i"))'
+"bar"
+"Baz"
+ruby -rjson -e 'puts [{cat: "foo"}, {cat: "bar"}, {cat: "Baz"}].to_json' | jq '.[] | select(.cat | test("b"; "i")) | .cat'
+"bar"
+"Baz"
+
+curl -s -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $(lpass show --notes do_token)" "https://api.digitalocean.com/v2/images?page=1&per_page=999&type=distribution" | jq '.images[] | select(.distribution | test("centos"; "i"))'
+
+Find CentOS 7 slug
+
+curl -s -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $(lpass show --notes do_token)" "https://api.digitalocean.com/v2/images?page=1&per_page=999&type=distribution" | jq '.images[] | select(.distribution | test("centos"; "i"))' | jq 'select(.slug | test("centos-7"))' | tee /dev/tty | pbcopy
+{
+  "id": 33919557,
+  "name": "7.4 x64",
+  "distribution": "CentOS",
+  "slug": "centos-7-x64",
+  "public": true,
+  "regions": [
+    "nyc1",
+    "sfo1",
+    "nyc2",
+    "ams2",
+    "sgp1",
+    "lon1",
+    "nyc3",
+    "ams3",
+    "fra1",
+    "tor1",
+    "sfo2",
+    "blr1"
+  ],
+  "created_at": "2018-04-30T18:57:25Z",
+  "min_disk_size": 20,
+  "type": "snapshot",
+  "size_gigabytes": 0.41
+}
+
+https://www.terraform.io/docs/providers/do/index.html
+https://www.terraform.io/docs/configuration/variables.html#environment-variables
+
+export TF_VAR_do_token="$(lpass show --notes do_token)"
+terraform init
+terraform plan
+terraform apply -auto-approve
+terraform state show
+curl -s -X GET -H "Content-Type: application/json" -H "Authorization: Bearer $(lpass show --notes do_token)" "https://api.digitalocean.com/v2/droplets?page=1&per_page=1" | jq '.droplets | length'
+terraform destroy -force
