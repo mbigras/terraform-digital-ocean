@@ -2,6 +2,11 @@
 
 > Exercises with Terraform and DigitalOcean
 
+## Todos
+
+* provision droplet with ansible
+* practice locally with docker because it's faster
+
 ## Links
 
 * https://www.yworks.com/yed-live/
@@ -23,4 +28,10 @@ ip=$(terraform state show digitalocean_droplet.web | awk '/ipv4_address/ { print
 ssh-keyscan $ip >> ~/.ssh/known_hosts
 ssh -i id_rsa root@$ip echo hello world
 terraform destroy -force
+```
+
+## List droplets
+
+```
+curl -s -X GET -H 'Content-Type: application/json' -H "Authorization: Bearer $(lpass show --notes do_token)" https://api.digitalocean.com/v2/droplets | jq '.'
 ```
